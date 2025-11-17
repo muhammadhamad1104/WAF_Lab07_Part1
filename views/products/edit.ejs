@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit <%= p.Product_Name %> - Grocery Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 650px;
+            width: 100%;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-card {
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .form-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2.5em;
+            animation: rotate 3s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .form-header h1 {
+            font-size: 2.2em;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .form-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .product-name-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff5f8 100%);
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-weight: 700;
+            color: #667eea;
+            margin-top: 10px;
+            border: 2px solid #667eea;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1em;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #43e97b;
+            box-shadow: 0 0 0 3px rgba(67, 233, 123, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .form-group input::placeholder {
+            color: #bbb;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 16px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 233, 123, 0.4);
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(67, 233, 123, 0.6);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #43e97b;
+            border: 2px solid #43e97b;
+            text-align: center;
+        }
+        
+        .btn-secondary:hover {
+            background: #f0fff4;
+            transform: translateY(-3px);
+        }
+        
+        .form-info {
+            background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 4px solid #43e97b;
+        }
+        
+        .form-info p {
+            color: #2d3748;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .edit-indicator {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-card {
+                padding: 30px 25px;
+            }
+            
+            .form-header h1 {
+                font-size: 1.8em;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-card">
+            <div class="form-header">
+                <div class="form-icon">✏️</div>
+                <h1>Edit Product <span class="edit-indicator">EDITING MODE</span></h1>
+                <p>Update the product information below</p>
+                <div class="product-name-badge"><%= p.Product_Name %></div>
+            </div>
+            
+            <div class="form-info">
+                <p>📝 You are editing an existing product. Make your changes and click Update to save.</p>
+            </div>
+            
+            <form action="/products/<%= p._id %>" method="post">
+                <div class="form-group">
+                    <label for="Product_Name">Product Name</label>
+                    <input 
+                        type="text" 
+                        id="Product_Name" 
+                        name="Product_Name" 
+                        value="<%= p.Product_Name %>" 
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="Firm_Name">Firm Name</label>
+                    <input 
+                        type="text" 
+                        id="Firm_Name" 
+                        name="Firm_Name" 
+                        value="<%= p.Firm_Name %>" 
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="Price">Price ($)</label>
+                    <input 
+                        type="number" 
+                        id="Price" 
+                        name="Price" 
+                        value="<%= p.Price %>" 
+                        step="0.01" 
+                        min="0" 
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="Quantity">Quantity</label>
+                    <input 
+                        type="number" 
+                        id="Quantity" 
+                        name="Quantity" 
+                        value="<%= p.Quantity %>" 
+                        min="0" 
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="Expiry_Date">Expiry Date</label>
+                    <input 
+                        type="date" 
+                        id="Expiry_Date" 
+                        name="Expiry_Date" 
+                        value="<%= new Date(p.Expiry_Date).toISOString().slice(0,10) %>" 
+                        required
+                    >
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">
+                        ✅ Update Product
+                    </button>
+                    <a href="/products" class="btn btn-secondary">
+                        ❌ Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
